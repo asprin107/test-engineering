@@ -1,0 +1,11 @@
+version: "2.2"
+services:
+  hotelbooking:
+    container_name: hotelbooking
+    image: maven:3.8.6-eclipse-temurin-17
+    working_dir: /spring-webflow-samples/booking-mvc
+    ports:
+      - "8080:8080"
+    entrypoint: ["mvn", "jetty:run"]
+    volumes:
+      - "./spring-webflow-samples:/spring-webflow-samples"
