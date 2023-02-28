@@ -13,19 +13,19 @@ services:
       - influxdb_data_v1:/var/lib/influxdb2
 #      - influxdb_config_v1/config:/etc/influxdb2
 
-  influxdb_v2:
-    container_name: influxdb_v2
-    image: influxdb:2.6.1-alpine
-    ports:
-      - "8087:8086"
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
-      - DOCKER_INFLUXDB_INIT_PASSWORD=my-password
-      - DOCKER_INFLUXDB_INIT_ORG=org
-      - DOCKER_INFLUXDB_INIT_BUCKET=test
-    volumes:
-      - influxdb_data_v2:/var/lib/influxdb2
+#  influxdb_v2:
+#    container_name: influxdb_v2
+#    image: influxdb:2.6.1-alpine
+#    ports:
+#      - "8087:8086"
+#    environment:
+#      - DOCKER_INFLUXDB_INIT_MODE=setup
+#      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
+#      - DOCKER_INFLUXDB_INIT_PASSWORD=my-password
+#      - DOCKER_INFLUXDB_INIT_ORG=org
+#      - DOCKER_INFLUXDB_INIT_BUCKET=test
+#    volumes:
+#      - influxdb_data_v2:/var/lib/influxdb2
   #      - influxdb_config_v2/config:/etc/influxdb2
 
   grafana:
@@ -37,5 +37,5 @@ services:
 volumes:
   influxdb_data_v1:
 #  influxdb_config_v1:
-  influxdb_data_v2:
+#  influxdb_data_v2:
 #  influxdb_config_v2:
