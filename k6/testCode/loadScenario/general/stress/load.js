@@ -1,4 +1,4 @@
 export const stages = [
-    {target: 30, duration: "10m"}, // Ramp-up
-    {target: 0, duration: "5s"} // Close
+    {target: 30, duration: "60s"}, // Ramp-up
+    {target: 0, duration: "1s"} // Close
 ]

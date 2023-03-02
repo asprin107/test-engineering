@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  dogstatd:
+    image: datadog/agent:latest
+    container_name: datadog
+    ports:
+      - "8125:8125/udp"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DD_SITE=datadoghq.com
+      - DD_API_KEY=<DD_API_KEY>
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=1

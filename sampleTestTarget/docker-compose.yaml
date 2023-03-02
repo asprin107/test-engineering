@@ -1,11 +1,33 @@
 version: "2.2"
 services:
-  hotelbooking:
-    container_name: hotelbooking
-    image: maven:3.8.6-eclipse-temurin-17
-    working_dir: /spring-webflow-samples/booking-mvc
+  mysql:
+    container_name: mariadb
+    image: mariadb:10.8.5
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_USER=petclinic
+      - MYSQL_PASSWORD=petclinic
+      - MYSQL_DATABASE=petclinic
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"
+  postgres:
+    container_name: postgres
+    image: postgres:14.1
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=petclinic
+      - POSTGRES_USER=petclinic
+      - POSTGRES_DB=petclinic
+  petclinic:
+    container_name: petclinic
+    image: openjdk:17
+    entrypoint: [ "java", "-jar" , "spring-petclinic-3.0.0.jar" ]
     ports:
       - "8080:8080"
-    entrypoint: ["mvn", "jetty:run"]
     volumes:
-      - "./spring-webflow-samples:/spring-webflow-samples"
+      - "./spring-petclinic/build/libs/spring-petclinic-3.0.0.jar:/spring-petclinic-3.0.0.jar"
+    depends_on: [mysql, postgres]

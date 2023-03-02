@@ -37,8 +37,8 @@ export function login(host) {
 
     // Validate
     check(result, {
-        'http response status code is 200': result.status === 200,
-    });
+        'http response status code is 200': (r) => r.status === 200,
+    })
 
     sleep(1);
 }

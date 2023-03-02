@@ -1,6 +1,5 @@
 import http from 'k6/http';
-import { check } from 'k6';
-import { sleep } from 'k6';
+import { check, sleep } from 'k6';
 
 export function logout(host) {
     const url = host+'booking-mvc/logout';
