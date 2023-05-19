@@ -1,0 +1,17 @@
+FROM golang:1.20-alpine3.17 as builder
+WORKDIR $GOPATH/src/go.k6.io/k6
+ADD . .
+RUN apk --no-cache add git
+RUN go install go.k6.io/xk6/cmd/xk6@latest
+RUN xk6 build --output /tmp/k6 \
+    --with github.com/grafana/xk6-output-influxdb@v0.4.0 \
+    --with github.com/grafana/xk6-output-prometheus-remote@v0.2.1
+
+FROM alpine:3.17
+RUN apk add --no-cache ca-certificates && \
+    adduser -D -u 12345 -g 12345 k6
+COPY --from=builder /tmp/k6 /usr/bin/k6
+
+USER 12345
+WORKDIR /home/k6
+ENTRYPOINT ["k6"]
