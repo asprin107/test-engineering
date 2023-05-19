@@ -15,5 +15,5 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 How to get initial password
 
 ```shell
-kubectl get secret --namespace argocd grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```

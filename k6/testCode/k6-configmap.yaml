@@ -1,0 +1,30 @@
+---
+apiVersion: k6.io/v1alpha1
+kind: K6
+metadata:
+  name: k6-sample
+spec:
+  parallelism: 4
+  cleanup: post
+  script:
+    configMap:
+      name: "k6-test"
+      file: test.js
+  arguments: -o influxdb=http://influxdb.monitoring/test
+  runner:
+    image: asprin/k6:latest
+    env:
+      - name: K6_STATSD_ENABLE_TAGS
+        value: 'true'
+      - name: K6_STATSD_ADDR
+        value: datadog:8125
+      - name: K6_INFLUXDB_USERNAME
+        value: influxdb
+      - name: K6_INFLUXDB_PASSWORD
+        value: my-password
+      - name: K6_INFLUXDB_INSECURE
+        value: 'false'
+      - name: K6_INFLUXDB_PUSH_INTERVAL
+        value: '1s'
+      - name: K6_INFLUXDB_CONCURRENT_WRITES
+        value: '4'

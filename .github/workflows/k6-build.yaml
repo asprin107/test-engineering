@@ -1,0 +1,9 @@
+name: 'Build k6 binary'
+on:
+  workflow_dispatch:
+
+jobs:
+  build-k6:
+    runs-on: ubuntu-latest
+    steps:
+      - name:
