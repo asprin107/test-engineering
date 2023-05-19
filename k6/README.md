@@ -100,3 +100,48 @@ Reference: https://github.com/grafana/xk6-output-influxdb
 It doesn't need to be built into a k6 binary, but it must be imported in summary test code. 
 
 Reference: https://github.com/benc-uk/k6-reporter
+
+
+# Test Code
+
+## Configure project
+
+Initiate node project.
+```shell
+npm init -y
+```
+
+Install essential libraries.
+```shell
+npm install --save-dev \
+    webpack \
+    webpack-cli \
+    k6 \
+    babel-loader \
+    @babel/core \
+    @babel/preset-env \
+    core-js
+```
+
+Configure Webpack. Set up a `webpack.config.js` file
+```javascript
+const path = require('path');
+
+module.exports = {
+  mode: 'production',
+  entry: {
+    login: './src/login.test.js',
+    signup: './src/signup.test.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'), // eslint-disable-line
+    libraryTarget: 'commonjs',
+    filename: '[name].bundle.js',
+  },
+  module: {
+    rules: [{ test: /\.js$/, use: 'babel-loader' }],
+  },
+  target: 'web',
+  externals: /k6(\/.*)?/,
+};
+```
