@@ -1,0 +1,28 @@
+replicaCount: 1
+image:
+  repository: influxdb
+  tag: 1.8.10
+  pullPolicy: IfNotPresent
+  env:
+    username: influxdb
+    password: my-password
+service:
+  name: influxdb
+  type: ClusterIP
+  port: 80
+  targetPort: 8086
+  enabled: true
+  annotations: {}
+  labels: {}
+  portName: service
+  # Adds the appProtocol field to the service. This allows to work with istio protocol selection. Ex: "http" or "tcp"
+  appProtocol: ""
+  nodePort:
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
