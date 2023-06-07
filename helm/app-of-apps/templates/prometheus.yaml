@@ -17,5 +17,5 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-        - name: nodeExporter.enabled
+        - name: prometheus-node-exporter.enabled
           value: "false"
