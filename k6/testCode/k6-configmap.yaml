@@ -12,7 +12,7 @@ spec:
       file: test.js
   arguments: -o influxdb=http://influxdb.monitoring/test
   runner:
-    image: asprin/k6:latest
+    image: grafana/k6:latest
     env:
       - name: K6_STATSD_ENABLE_TAGS
         value: 'true'
