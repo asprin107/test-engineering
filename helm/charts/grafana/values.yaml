@@ -544,10 +544,20 @@ plugins: []
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
-datasources: {}
-#  datasources.yaml:
-#    apiVersion: 1
-#    datasources:
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: InfluxDB_v1
+        type: influxdb
+        access: proxy
+        user: influxdb
+        url: http://influxdb:80
+        jsonData:
+          dbName: test
+          httpMode: GET
+        secureJsonData:
+          password: my-password
 #    - name: Prometheus
 #      type: prometheus
 #      url: http://prometheus-prometheus-server

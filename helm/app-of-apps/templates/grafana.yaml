@@ -12,8 +12,10 @@ spec:
   project: default
 
   source:
-    path: charts/grafana
-    repoURL: https://github.com/grafana/helm-charts.git
+{{/*    path: charts/grafana*/}}
+{{/*    repoURL: https://github.com/grafana/helm-charts.git*/}}
+    path: helm/charts/grafana
+    repoURL: https://github.com/asprin107/chaos-engineering.git
     targetRevision: HEAD
     helm:
       parameters:
