@@ -12,12 +12,14 @@ spec:
       file: test.js
   arguments: -o influxdb=http://influxdb.monitoring/test
   runner:
-    image: grafana/k6:latest
+    image: asprin/k6:latest
     env:
+# statd configure (This can be used datadog agent)
       - name: K6_STATSD_ENABLE_TAGS
         value: 'true'
       - name: K6_STATSD_ADDR
         value: datadog:8125
+# Influxdb v1 configure
       - name: K6_INFLUXDB_USERNAME
         value: influxdb
       - name: K6_INFLUXDB_PASSWORD
@@ -28,3 +30,8 @@ spec:
         value: '1s'
       - name: K6_INFLUXDB_CONCURRENT_WRITES
         value: '4'
+# Prometheus configure
+      - name: K6_PROMETHEUS_RW_SERVER_URL
+        value: 'http://prometheus-server'
+      - name: K6_PROMETHEUS_RW_PUSH_INTERVAL
+        value: '5s'
