@@ -683,6 +683,8 @@ dashboards:
    default:
      influxdb:
        file: dashboards/k6-influxdb-dashboard.json
+     prometheus:
+       file: dashboards/k6-prometheus-dashboard.json
 #     influxdb:
 #       gnetId: 2587
 #       revision: 3
