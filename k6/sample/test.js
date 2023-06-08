@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, sleep } from 'k6';
 
 export const options = {
     stages: [
@@ -14,4 +14,5 @@ export default function () {
     check(result, {
         'http response status code is 200': result.status === 200,
     });
+    sleep(1)
 }

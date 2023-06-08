@@ -23,3 +23,8 @@ spec:
           value: NodePort
         - name: server.service.nodePort
           value: "30083"
+        - name: server.extraFlags[0]
+          value: "web.enable-lifecycle"
+        - name: server.extraFlags[1]
+          value: "web.enable-remote-write-receiver"
+

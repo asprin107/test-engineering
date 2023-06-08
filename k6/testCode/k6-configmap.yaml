@@ -10,7 +10,7 @@ spec:
     configMap:
       name: "k6-test"
       file: test.js
-  arguments: -o influxdb=http://influxdb.monitoring/test
+  arguments: -o influxdb=http://influxdb.monitoring/test -o experimental-prometheus-rw
   runner:
     image: asprin/k6:latest
     env:
@@ -32,6 +32,8 @@ spec:
         value: '4'
 # Prometheus configure
       - name: K6_PROMETHEUS_RW_SERVER_URL
-        value: 'http://prometheus-server'
+        value: 'http://prometheus-server.monitoring/api/v1/write'
       - name: K6_PROMETHEUS_RW_PUSH_INTERVAL
         value: '5s'
+      - name: K6_PROMETHEUS_RW_INSECURE_SKIP_TLS_VERIFY
+        value: 'true'
