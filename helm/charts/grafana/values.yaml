@@ -558,11 +558,11 @@ datasources:
           httpMode: GET
         secureJsonData:
           password: my-password
-#    - name: Prometheus
-#      type: prometheus
-#      url: http://prometheus-prometheus-server
-#      access: proxy
-#      isDefault: true
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server:80
+        access: proxy
+        isDefault: true
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
