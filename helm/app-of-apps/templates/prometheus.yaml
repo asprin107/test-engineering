@@ -19,3 +19,7 @@ spec:
       parameters:
         - name: prometheus-node-exporter.enabled
           value: "false"
+        - name: server.service.type
+          value: NodePort
+        - name: server.service.nodePort
+          value: "30083"
