@@ -2,13 +2,21 @@
 
 ## k6
 
+### Tutorial
+This scenario use kubernetes, terraform.
+
+See `./infra/terraform/k8s-local/README.md`
+
+
 ### Outputs
 #### Types
 * influxdb-grafana : Test worker's metric are saved into influxdb and can be visualized with grafana.
 * prometheus-grafana : Test worker's metric are saved into prometheus and can be visualized with grafana.
 
-#### How to run?
-  Go to `./k6/outputs` directory.
+#### Docker
+
+##### How to run?
+Go to `./k6/outputs` directory.
 
 Run using docker compose.
 ```shell
