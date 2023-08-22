@@ -28,5 +28,7 @@ spec:
         - name: server.extraFlags[1]
           value: "enable-feature=remote-write-receiver"
         - name: server.extraFlags[2]
+          value: "enable-feature=native-histograms"
+        - name: server.extraFlags[3]
           value: "web.enable-remote-write-receiver"
 
