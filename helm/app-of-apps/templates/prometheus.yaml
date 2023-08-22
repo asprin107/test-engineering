@@ -26,7 +26,7 @@ spec:
         - name: server.extraFlags[0]
           value: "web.enable-lifecycle"
         - name: server.extraFlags[1]
-          value: "--enable-feature=remote-write-receiver"
+          value: "enable-feature=remote-write-receiver"
         - name: server.extraFlags[2]
           value: "web.enable-remote-write-receiver"
 
