@@ -1,3 +1,10 @@
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+data "aws_vpc" "main" {
+  id = var.eks_vpc_id
+}
+
 data "aws_iam_policy_document" "eks_trusted" {
   statement {
     principals {
@@ -33,8 +40,29 @@ data "aws_iam_policy_document" "fargate" {
   }
 }
 
-data "aws_caller_identity" "current" {}
-
-data "aws_vpc" "main" {
-  id = var.eks_vpc_id
+data "aws_iam_policy_document" "lb_controller_trusted" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.oidc_provider.arn]
+    }
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    condition {
+      test = "StringEquals"
+      variable = format("%s%s",
+        replace(aws_iam_openid_connect_provider.oidc_provider.arn, "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/", "")
+        , ":aud"
+      ) // Set oidc provider name from arn.
+      values = ["sts.amazonaws.com"]
+    }
+    condition {
+      test = "StringEquals"
+      variable = format("%s%s",
+        replace(aws_iam_openid_connect_provider.oidc_provider.arn, "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/", "")
+        , ":sub"
+      ) // Set oidc provider name from arn.
+      values = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+    }
+  }
 }

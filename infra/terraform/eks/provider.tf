@@ -12,10 +12,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2"
     }
-#    argocd = {
-#      source  = "oboukili/argocd"
-#      version = "5.3.0"
-#    }
+    #    argocd = {
+    #      source  = "oboukili/argocd"
+    #      version = "5.3.0"
+    #    }
   }
 }
 

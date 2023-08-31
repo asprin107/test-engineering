@@ -25,3 +25,9 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSFargatePodExecutionRolePolic
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
   role       = aws_iam_role.fargate_exec.name
 }
+
+resource "aws_iam_role_policy" "fargate_logging" {
+  name   = "eks-fargate-logging-${local.naming_rule}"
+  policy = file("${path.module}/resources/iam_policy/fargate_exec_policy.json")
+  role   = aws_iam_role.fargate_exec.id
+}
