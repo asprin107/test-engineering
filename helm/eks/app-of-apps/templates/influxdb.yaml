@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: influxdb
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: {{ .Values.spec.destination.server }}
+  project: default
+
+  source:
+    path: helm/charts/influxdb
+    repoURL: https://github.com/asprin107/chaos-engineering.git
+    targetRevision: HEAD
+    helm:
+      parameters:
+        - name: service.type
+          value: NodePort
+        - name: service.nodePort
+          value: "30082"

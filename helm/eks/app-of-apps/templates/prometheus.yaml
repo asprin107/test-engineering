@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: monitoring
+    server: {{ .Values.spec.destination.server }}
+  project: default
+
+  source:
+    path: charts/prometheus
+    repoURL: https://github.com/prometheus-community/helm-charts.git
+    targetRevision: HEAD
+    helm:
+      parameters:
+        - name: prometheus-node-exporter.enabled
+          value: "false"
+        - name: server.service.type
+          value: NodePort
+        - name: server.service.nodePort
+          value: "30083"
+        - name: server.extraFlags[0]
+          value: "web.enable-lifecycle"
+        - name: server.extraFlags[1]
+          value: "enable-feature=remote-write-receiver"
+        - name: server.extraFlags[2]
+          value: "enable-feature=native-histograms"
+        - name: server.extraFlags[3]
+          value: "web.enable-remote-write-receiver"
+
