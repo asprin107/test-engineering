@@ -8,16 +8,16 @@ terraform {
       source  = "hashicorp/helm"
       version = "~> 2"
     }
-    #    argocd = {
-    #      source  = "oboukili/argocd"
-    #      version = "5.3.0"
-    #    }
+    argocd = {
+      source  = "oboukili/argocd"
+      version = "5.3.0"
+    }
   }
 }
 
-#provider "argocd" {
-#  server_addr = "localhost:30080"
-#  username    = "admin"
-#  password    = data.kubernetes_secret.argocd-initial-pwd.data.password
-#  insecure    = true
-#}
+provider "argocd" {
+  server_addr = data.kubernetes_service.svc-argocd-server.status[0].load_balancer[0].ingress[0].hostname
+  username    = "admin"
+  password    = data.kubernetes_secret.argocd-initial-pwd.data.password
+  insecure    = true
+}

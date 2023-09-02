@@ -5,36 +5,28 @@ resource "helm_release" "argocd" {
   namespace        = var.namespace
   create_namespace = true
 
-  set {
-    name  = "server.service.type"
-    value = "LoadBalancer"
-  }
-  set {
-    name  = "server.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
-    value = "external"
-  }
-  set {
-    name  = "server.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-name"
-    value = "${var.project}-${var.env}-argocd"
-  }
-  set {
-    name  = "server.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-scheme"
-    value = "internet-facing"
-  }
-  set {
-    name  = "server.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-nlb-target-type"
-    value = "ip"
-  }
-
-  dynamic "set" {
-    for_each = var.lb_subnet_ids
-    content {
-      name  = "server.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-subnets"
-      value = set.value
-    }
-  }
+  values = [templatefile("${path.module}/eks_values.yaml.tftpl", {
+    lb_name            = "${var.project}-${var.env}"
+    lb_subnets         = join(", ", var.lb_subnet_ids)
+    lb_security_groups = join(", ", var.lb_sg_ids)
+  })]
 }
 
+data "kubernetes_secret" "argocd-initial-pwd" {
+  metadata {
+    name      = "argocd-initial-admin-secret"
+    namespace = var.namespace
+  }
+  depends_on = [helm_release.argocd]
+}
+
+data "kubernetes_ingress_v1" "ing-argocd-server" {
+  metadata {
+    name      = "argocd-server"
+    namespace = var.namespace
+  }
+  depends_on = [helm_release.argocd]
+}
 
 #resource "argocd_application" "app-of-apps" {
 #  metadata {
@@ -73,11 +65,3 @@ resource "helm_release" "argocd" {
 #  }
 #  depends_on = [helm_release.argocd, data.kubernetes_secret.argocd-initial-pwd]
 #}
-
-data "kubernetes_secret" "argocd-initial-pwd" {
-  metadata {
-    name      = "argocd-initial-admin-secret"
-    namespace = "argocd"
-  }
-  depends_on = [helm_release.argocd]
-}

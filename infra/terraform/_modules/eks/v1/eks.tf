@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "main" {
 
   vpc_config {
     subnet_ids              = var.eks_subnet_ids
-    security_group_ids      = [aws_security_group.eks.id]
+    security_group_ids      = [aws_security_group.eks.id] // This security group is intended for cross-account use. Only custom node group can use this.
     endpoint_private_access = true
     endpoint_public_access  = true
     public_access_cidrs     = var.eks_public_access_cidrs
