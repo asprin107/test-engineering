@@ -6,4 +6,6 @@ module "argocd" {
   namespace     = "k6"
   lb_subnet_ids = module.network.subnets_public_ids
   lb_sg_ids     = [module.eks.eks_alb_sg_id]
+
+  depends_on = [module.eks]
 }

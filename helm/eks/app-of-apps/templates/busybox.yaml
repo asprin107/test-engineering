@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: busybox
-  namespace: argocd
+  namespace: k6
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

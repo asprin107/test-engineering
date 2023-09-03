@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: grafana
-  namespace: argocd
+  namespace: monitoring
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -20,6 +20,10 @@ spec:
     helm:
       parameters:
         - name: service.type
-          value: NodePort
-        - name: service.nodePort
-          value: "30081"
+          value: {{ .Values.grafana.server.service.type }}
+          {{- if eq .Values.grafana.server.service.type "LoadBalancer" }}
+          {{- range $key, $val := .Values.grafana.annotations.loadbalancer }}
+        - name: {{ "service.annotations.annotations." .$key }}
+          value: {{ .$val }}
+          {{- end }}
+          {{- end}}
