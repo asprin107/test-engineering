@@ -47,7 +47,7 @@ resource "aws_eks_fargate_profile" "fargate" {
 kubectl patch deployment coredns \
   -n kube-system \
   --type json \
-  -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'"
+  -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
 EOT
   }
 }
