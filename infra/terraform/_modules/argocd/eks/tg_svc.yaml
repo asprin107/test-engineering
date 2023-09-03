@@ -1,0 +1,9 @@
+grafana:
+  listen_port: 80
+  service_port: 3000
+influxdb:
+  listen_port: 81
+  service_port: 8086
+prometheus:
+  listen_port: 82
+  service_port: 9090

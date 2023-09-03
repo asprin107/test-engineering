@@ -5,13 +5,13 @@ data "aws_security_group" "eks_auto_generated" {
 
 # Auto generated security group has egress to all basically.
 
-resource "aws_security_group_rule" "alb" {
+resource "aws_security_group_rule" "elb" {
   security_group_id        = aws_eks_cluster.main.vpc_config[0].cluster_security_group_id
   type                     = "ingress"
   protocol                 = "-1"
   from_port                = 0
   to_port                  = 0
-  source_security_group_id = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.elb.id
 }
 
 resource "aws_security_group" "eks" {
@@ -29,11 +29,11 @@ resource "aws_security_group" "eks" {
   }
 
   ingress {
-    description     = "Allow ingress all from ALB."
+    description     = "Allow ingress all from ELB."
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    security_groups = [aws_security_group.alb.id]
+    security_groups = [aws_security_group.elb.id]
   }
 
   egress {
@@ -48,13 +48,13 @@ resource "aws_security_group" "eks" {
 }
 
 
-resource "aws_security_group" "alb" {
-  name        = "seg-${local.naming_rule}-eks-alb"
-  description = "Default sg for eks ALB."
+resource "aws_security_group" "elb" {
+  name        = "seg-${local.naming_rule}-eks-elb"
+  description = "Default sg for eks ELB."
   vpc_id      = var.eks_vpc_id
 
   ingress {
-    description = "Allow HTTP protocol from valid office."
+    description = "Allow argocd web protocol from valid office."
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -62,7 +62,7 @@ resource "aws_security_group" "alb" {
   }
 
   ingress {
-    description = "Allow HTTPS protocol from valid office."
+    description = "Allow argocd grpc protocol from valid office."
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"

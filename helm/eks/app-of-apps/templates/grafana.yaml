@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: grafana
-  namespace: monitoring
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -19,11 +19,11 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-        - name: service.type
-          value: {{ .Values.grafana.server.service.type }}
-          {{- if eq .Values.grafana.server.service.type "LoadBalancer" }}
-          {{- range $key, $val := .Values.grafana.annotations.loadbalancer }}
-        - name: {{ "service.annotations.annotations." .$key }}
-          value: {{ .$val }}
-          {{- end }}
-          {{- end}}
+        - name: targetGroupBinding.enabled
+          value: "true"
+        - name: targetGroupBinding.targetGroupARN
+          value: "arn:aws:elasticloadbalancing:ap-northeast-2:142904692278:targetgroup/grafana/f2a4115dfc4ce3c2"
+{{/*        - name: service.type*/}}
+{{/*          value: NodePort*/}}
+{{/*        - name: service.nodePort*/}}
+{{/*          value: "30081"*/}}

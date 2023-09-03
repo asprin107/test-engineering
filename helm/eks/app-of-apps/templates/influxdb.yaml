@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: influxdb
-  namespace: monitoring
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -17,7 +17,11 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
-        - name: service.type
-          value: NodePort
-        - name: service.nodePort
-          value: "30082"
+        - name: service.port
+          value: "81"
+{{/*    helm:*/}}
+{{/*      parameters:*/}}
+{{/*        - name: service.type*/}}
+{{/*          value: NodePort*/}}
+{{/*        - name: service.nodePort*/}}
+{{/*          value: "30082"*/}}

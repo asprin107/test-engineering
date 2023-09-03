@@ -1,11 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 5"
-    }
-  }
-}
+terraform {}
 
 provider "aws" {
   profile = var.aws_profile

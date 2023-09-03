@@ -2,17 +2,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
 
-grafana:
-  server:
-    service:
-      type: LoadBalancer
-  annotations:
-    loadbalancer:
-      service.beta.kubernetes.io/aws-load-balancer-type: external
-      service.beta.kubernetes.io/aws-load-balancer-name: k6-testing-argocd
-      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-      service.beta.kubernetes.io/aws-load-balancer-subnets:
-      service.beta.kubernetes.io/aws-load-balancer-alpn-policy: HTTP2Preferred
-      service.beta.kubernetes.io/aws-load-balancer-ip-address-type: ipv4
-

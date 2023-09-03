@@ -1,24 +1,42 @@
-variable "namespace" {
-  description = "Kubernetes namespace for argocd."
-  type        = string
+variable "tags" {
+  description = "Default tags."
+  type = object({
+    Project     = string
+    Environment = string
+  })
 }
 
-variable "project" {
-  description = "Project name."
-  type        = string
-}
-
-variable "env" {
-  description = "System environment."
-  type        = string
-}
-
-variable "lb_subnet_ids" {
-  description = "List subnet ids that target group would be deployed."
+variable "lb_security_groups" {
+  description = "Security group ids for nlb."
   type        = list(string)
 }
 
-variable "lb_sg_ids" {
-  description = "List security group ids that ALB used."
+variable "lb_subnets" {
+  description = "Subnet ids for nlb."
   type        = list(string)
+}
+
+variable "vpc_id" {
+  description = "VPC id for nlb."
+  type        = string
+}
+
+variable "eks_endpoint" {
+  description = "EKS endpoint."
+  type        = string
+}
+
+variable "eks_kubeconfig_certificate_authority_data" {
+  description = "EKS author certificate"
+  type        = string
+}
+
+variable "eks_cluster_name" {
+  description = "EKS Cluster name."
+  type        = string
+}
+
+variable "aws_profile" {
+  description = "AWS Profile."
+  type        = string
 }

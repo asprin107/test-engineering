@@ -552,7 +552,7 @@ datasources:
         type: influxdb
         access: proxy
         user: influxdb
-        url: http://influxdb:80
+        url: http://influxdb:81
         jsonData:
           dbName: test
           httpMode: GET
@@ -560,7 +560,7 @@ datasources:
           password: my-password
       - name: Prometheus
         type: prometheus
-        url: http://prometheus-server:80
+        url: http://prometheus-server:82
         access: proxy
         isDefault: true
 #    - name: CloudWatch

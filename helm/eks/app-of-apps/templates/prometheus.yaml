@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: prometheus
-  namespace: monitoring
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -17,12 +17,14 @@ spec:
     targetRevision: HEAD
     helm:
       parameters:
+        - name: server.service.servicePort
+          value: "82"
         - name: prometheus-node-exporter.enabled
           value: "false"
-        - name: server.service.type
-          value: NodePort
-        - name: server.service.nodePort
-          value: "30083"
+{{/*        - name: server.service.type*/}}
+{{/*          value: NodePort*/}}
+{{/*        - name: server.service.nodePort*/}}
+{{/*          value: "30083"*/}}
         - name: server.extraFlags[0]
           value: "web.enable-lifecycle"
         - name: server.extraFlags[1]

@@ -41,14 +41,12 @@ resource "aws_eks_fargate_profile" "fargate" {
     namespace = "default"
   }
 
-  # Change default coreDNS can be deployed fargate. (default can only deploy to ec2. "eks.amazonaws.com/compute-type : ec2")
-  provisioner "local-exec" {
-    command = <<-EOT
-kubectl patch deployment coredns \
-  -n kube-system \
-  --type json \
-  -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
-EOT
+  selector {
+    namespace = "argocd"
+  }
+
+  selector {
+    namespace = "monitoring"
   }
 }
 

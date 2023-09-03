@@ -14,6 +14,6 @@ output "eks_oidc_provider_arn" {
   value = aws_iam_openid_connect_provider.oidc_provider.arn
 }
 
-output "eks_alb_sg_id" {
-  value = aws_security_group.alb.id
+output "eks_elb_sg_id" {
+  value = aws_security_group.elb.id
 }
