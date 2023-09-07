@@ -16,13 +16,11 @@ spec:
 {{/*    repoURL: https://github.com/grafana/helm-charts.git*/}}
     path: helm/charts/grafana
     repoURL: https://github.com/asprin107/chaos-engineering.git
-    targetRevision: HEAD
+    targetRevision: feature/eks
     helm:
       parameters:
-        - name: targetGroupBinding.enabled
-          value: "true"
-        - name: targetGroupBinding.targetGroupARN
-          value: "arn:aws:elasticloadbalancing:ap-northeast-2:142904692278:targetgroup/grafana/f2a4115dfc4ce3c2"
+        - name: service.port
+          value: "81"
 {{/*        - name: service.type*/}}
 {{/*          value: NodePort*/}}
 {{/*        - name: service.nodePort*/}}

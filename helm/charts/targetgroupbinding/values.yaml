@@ -1,4 +1,9 @@
 grafana:
+  port: 81
   targetGroupARN: ""
 influxdb:
+  port: 82
+  targetGroupARN: ""
+prometheus:
+  port: 83
   targetGroupARN: ""

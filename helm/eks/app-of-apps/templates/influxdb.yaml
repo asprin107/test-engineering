@@ -18,7 +18,7 @@ spec:
     helm:
       parameters:
         - name: service.port
-          value: "81"
+          value: "82"
 {{/*    helm:*/}}
 {{/*      parameters:*/}}
 {{/*        - name: service.type*/}}

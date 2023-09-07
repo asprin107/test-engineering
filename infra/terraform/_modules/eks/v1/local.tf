@@ -1,3 +1,4 @@
 locals {
-  naming_rule = "${var.tags.Project}-${var.tags.Environment}"
+  naming_rule      = "${var.tags.Project}-${var.tags.Environment}"
+  argocd_namespace = "argocd"
 }

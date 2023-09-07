@@ -38,7 +38,7 @@ resource "aws_eks_fargate_profile" "fargate" {
   }
 
   selector {
-    namespace = "default"
+    namespace = "k6-operator-system"
   }
 
   selector {

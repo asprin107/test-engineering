@@ -6,7 +6,7 @@ metadata:
 spec:
   serviceRef:
     name: grafana
-    port: 80
+    port: {{ .Values.grafana.port }}
   targetType: ip
   targetGroupARN: {{ .Values.grafana.targetGroupARN }}
 ---
@@ -18,7 +18,7 @@ metadata:
 spec:
   serviceRef:
     name: influxdb
-    port: 81
+    port: {{ .Values.influxdb.port }}
   targetType: ip
   targetGroupARN: {{ .Values.influxdb.targetGroupARN }}
 ---
@@ -30,6 +30,6 @@ metadata:
 spec:
   serviceRef:
     name: prometheus
-    port: 81
+    port: {{ .Values.prometheus.port }}
   targetType: ip
   targetGroupARN: {{ .Values.influxdb.targetGroupARN }}

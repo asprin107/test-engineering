@@ -18,7 +18,7 @@ spec:
     helm:
       parameters:
         - name: server.service.servicePort
-          value: "82"
+          value: "83"
         - name: prometheus-node-exporter.enabled
           value: "false"
 {{/*        - name: server.service.type*/}}

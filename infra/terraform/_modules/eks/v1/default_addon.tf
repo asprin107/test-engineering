@@ -3,6 +3,7 @@
 #  -n kube-system \
 #  --type json \
 #  -p='[{"op": "remove", "path": "/spec/template/metadata/annotations/eks.amazonaws.com~1compute-type"}]'
+### CoreDNS ###
 resource "aws_eks_addon" "coredns" {
   addon_name                  = "coredns"
   cluster_name                = aws_eks_cluster.main.name
@@ -11,8 +12,10 @@ resource "aws_eks_addon" "coredns" {
   configuration_values = jsonencode({
     computeType = "Fargate"
   })
+  depends_on = [aws_eks_fargate_profile.fargate]
 }
 
+### LoadBalancer Controller ###
 resource "helm_release" "lb_controller" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
@@ -49,5 +52,5 @@ resource "helm_release" "lb_controller" {
     value = var.eks_vpc_id
   }
 
-  depends_on = [aws_eks_fargate_profile.fargate, kubernetes_config_map_v1.fargate_logging]
+  depends_on = [aws_eks_fargate_profile.fargate, aws_eks_addon.coredns]
 }

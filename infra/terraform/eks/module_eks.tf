@@ -6,6 +6,8 @@ module "eks" {
   eks_subnet_ids          = module.network.subnets_private_ids
   eks_version             = "1.27"
   eks_vpc_id              = module.network.main_vpc_id
+  lb_security_groups      = [module.eks.eks_elb_sg_id]
+  lb_subnets              = module.network.subnets_public_ids
 
   tags = local.tags
 }

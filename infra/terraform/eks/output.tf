@@ -1,3 +1,3 @@
-output "argocd_url" {
-  value = module.argocd.argocd-server-endpoint
-}
+#output "argocd_url" {
+#  value = module.argocd.argocd-server-endpoint
+#}

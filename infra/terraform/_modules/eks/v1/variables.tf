@@ -36,3 +36,13 @@ variable "eks_vpc_id" {
   description = "VPC id for EKS."
   type        = string
 }
+
+variable "lb_security_groups" {
+  description = "Security group ids for nlb."
+  type        = list(string)
+}
+
+variable "lb_subnets" {
+  description = "Subnet ids for nlb."
+  type        = list(string)
+}
