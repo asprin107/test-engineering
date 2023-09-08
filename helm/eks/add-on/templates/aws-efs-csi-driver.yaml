@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-efs-csi-driver
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kube-system
+    server: {{ .Values.spec.destination.server }}
+  project: default
+
+  source:
+    path: helm/charts/aws-efs-csi-driver
+    repoURL: https://github.com/asprin107/chaos-engineering.git
+    targetRevision: feature/eks
+    helm:
+      parameters:
+        - name: controller.serviceAccount.create
+          value: "true"
+        - name: controller.serviceAccount.name
+          value: "efs-csi-controller-sa"
+        - name: controller.serviceAccount.annotations.eks\.amazonaws\.com/role-arn
+          value: {{ .Values.aws_efs_csi_driver.role_arn }}

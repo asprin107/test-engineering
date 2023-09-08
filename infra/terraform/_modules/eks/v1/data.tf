@@ -45,24 +45,18 @@ data "aws_iam_policy_document" "lb_controller_trusted" {
     effect = "Allow"
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.oidc_provider.arn]
+      identifiers = [local.eks_oidc_provider.arn]
     }
     actions = ["sts:AssumeRoleWithWebIdentity"]
     condition {
-      test = "StringEquals"
-      variable = format("%s%s",
-        replace(aws_iam_openid_connect_provider.oidc_provider.arn, "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/", "")
-        , ":aud"
-      ) // Set oidc provider name from arn.
-      values = ["sts.amazonaws.com"]
+      test     = "StringEquals"
+      variable = "${local.eks_oidc_provider.name}:aud" // Set oidc provider name from arn.
+      values   = ["sts.amazonaws.com"]
     }
     condition {
-      test = "StringEquals"
-      variable = format("%s%s",
-        replace(aws_iam_openid_connect_provider.oidc_provider.arn, "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/", "")
-        , ":sub"
-      ) // Set oidc provider name from arn.
-      values = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
+      test     = "StringEquals"
+      variable = "${local.eks_oidc_provider.name}:sub" // Set oidc provider name from arn.
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
     }
   }
 }

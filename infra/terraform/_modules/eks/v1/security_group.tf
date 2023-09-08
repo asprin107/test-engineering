@@ -56,7 +56,7 @@ resource "aws_security_group" "elb" {
   ingress {
     description = "Allow argocd web protocol from valid office."
     from_port   = 80
-    to_port     = 80
+    to_port     = 84
     protocol    = "tcp"
     cidr_blocks = var.eks_public_access_cidrs
   }
