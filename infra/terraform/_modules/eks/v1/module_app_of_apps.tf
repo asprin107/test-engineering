@@ -3,7 +3,8 @@ module "argocd" {
 
   vpc_id             = var.eks_vpc_id
   lb_security_groups = var.lb_security_groups
-  lb_subnets         = var.lb_subnets
+  eks_subnets        = var.lb_subnets
+  eks_oidc_provider  = local.eks_oidc_provider
 
   elb_id = aws_lb.eks.id
 

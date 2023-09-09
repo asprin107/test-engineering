@@ -11,8 +11,8 @@ variable "lb_security_groups" {
   type        = list(string)
 }
 
-variable "lb_subnets" {
-  description = "Subnet ids for nlb."
+variable "eks_subnets" {
+  description = "Subnet ids for EKS."
   type        = list(string)
 }
 
@@ -24,4 +24,12 @@ variable "vpc_id" {
 variable "elb_id" {
   description = "ELB id for eks service."
   type        = string
+}
+
+variable "eks_oidc_provider" {
+  description = "EKS OIDC provider."
+  type = object({
+    arn  = string
+    name = string
+  })
 }
