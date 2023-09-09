@@ -15,6 +15,12 @@ resource "argocd_application" "app-of-apps" {
       repo_url        = "https://github.com/asprin107/chaos-engineering.git"
       path            = "helm/eks/app-of-apps"
       target_revision = "feature/eks"
+      helm {
+        values = templatefile("${path.module}/resources/values.yaml.tftpl", {
+          prometheus_role_arn = aws_iam_role.irsa-prometheus.arn
+          volume_size         = "20Gi"
+        })
+      }
     }
 
     sync_policy {

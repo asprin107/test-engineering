@@ -1,0 +1,11 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+
+prometheus:
+  pv:
+    spec:
+      capacity:
+        storage: 8Gi
+      csi:
+        volumeHandle: "EFS ID"

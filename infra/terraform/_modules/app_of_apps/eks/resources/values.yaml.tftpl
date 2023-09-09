@@ -1,0 +1,8 @@
+prometheus:
+  server:
+    serviceAccounts:
+      roleArn: ${prometheus_role_arn}
+    persistentVolume:
+      storageClass: efs-sc
+      volumeName: efs-prometheus
+      size: ${volume_size}

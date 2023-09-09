@@ -12,9 +12,9 @@ spec:
   project: default
 
   source:
-    path: charts/prometheus
-    repoURL: https://github.com/prometheus-community/helm-charts.git
-    targetRevision: HEAD
+    path: helm/charts/prometheus
+    repoURL: https://github.com/asprin107/chaos-engineering.git
+    targetRevision: feature/eks
     helm:
       parameters:
         - name: server.service.servicePort
@@ -33,4 +33,17 @@ spec:
           value: "enable-feature=native-histograms"
         - name: server.extraFlags[3]
           value: "web.enable-remote-write-receiver"
-
+        - name: server.statefulSet.enabled
+          value: "true"
+        - name: server.persistentVolume.storageClass
+          value: {{ .Values.prometheus.server.persistentVolume.storageClass }}
+        - name: server.persistentVolume.volumeName
+          value: {{ .Values.prometheus.server.persistentVolume.volumeName }}
+        - name: alertmanager.enabled
+          value: "false"
+        - name: serviceAccounts.server.annotations.eks\.amazonaws\.com/role-arn
+          value: {{ .Values.prometheus.server.serviceAccounts.roleArn }}
+        - name: server.persistentVolume.size
+          value: {{ .Values.prometheus.server.persistentVolume.size }}
+        - name: server.persistentVolume.accessModes[0]
+          value: ReadWriteMany

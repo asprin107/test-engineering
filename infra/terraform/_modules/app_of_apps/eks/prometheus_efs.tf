@@ -5,11 +5,27 @@ resource "aws_efs_file_system" "prometheus" {
 }
 
 resource "aws_efs_mount_target" "prometheus" {
-  for_each = { for v in var.eks_subnets : v => v }
+  count = length(var.eks_subnets)
 
   file_system_id  = aws_efs_file_system.prometheus.id
-  subnet_id       = each.value
+  subnet_id       = var.eks_subnets[count.index]
   security_groups = [aws_security_group.efs-prometheus.id]
+}
+
+resource "aws_efs_access_point" "prometheus_data" {
+  file_system_id = aws_efs_file_system.prometheus.id
+  posix_user {
+    gid = 65534 // prometheus image:quay.io/prometheus/prometheus default user is "nobody", 65534.
+    uid = 65534 // prometheus image:quay.io/prometheus/prometheus default user is "nobody", 65534.
+  }
+  root_directory {
+    creation_info {
+      owner_gid   = 65534
+      owner_uid   = 65534
+      permissions = "755"
+    }
+    path = "/data" // prometheus need.
+  }
 }
 
 data "aws_vpc" "eks" {
@@ -53,10 +69,10 @@ resource "aws_security_group" "efs-prometheus" {
 #  statement {
 #    sid = "AllowEFSAccess"
 #    principals {
-#      type = "AWS"
+#      type        = "AWS"
 #      identifiers = [aws_iam_role.irsa-prometheus.arn]
 #    }
-#    effect  = "Allow"
+#    effect = "Allow"
 #    actions = [
 #      "elasticfilesystem:ClientMount",
 #      "elasticfilesystem:ClientWrite",
@@ -86,7 +102,7 @@ data "aws_iam_policy_document" "irsa_trusted" {
   statement {
     principals {
       type        = "Federated"
-      identifiers = [var.eks_oidc_provider.name]
+      identifiers = [var.eks_oidc_provider.arn]
     }
     effect  = "Allow"
     actions = ["sts:AssumeRoleWithWebIdentity"]

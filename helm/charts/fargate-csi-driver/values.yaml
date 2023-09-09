@@ -1,0 +1,6 @@
+pv:
+  spec:
+    capacity:
+      storage: 20Gi
+    csi:
+      volumeHandle: ""

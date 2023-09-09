@@ -2,3 +2,11 @@ spec:
   destination:
     server: https://kubernetes.default.svc
 
+prometheus:
+  server:
+    persistentVolume:
+      storageClass: efs-sc
+      volumeName: efs-prometheus
+      size: 8Gi
+    serviceAccounts:
+      roleArn: ""

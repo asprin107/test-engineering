@@ -1,4 +1,4 @@
-module "argocd" {
+module "app_of_apps" {
   source = "../../../_modules/app_of_apps/eks"
 
   vpc_id             = var.eks_vpc_id

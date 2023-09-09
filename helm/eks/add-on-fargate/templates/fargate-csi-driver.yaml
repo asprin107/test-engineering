@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-efs-csi-driver
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kube-system
+    server: {{ .Values.spec.destination.server }}
+  project: default
+
+  source:
+    path: helm/charts/fargate-csi-driver
+    repoURL: https://github.com/asprin107/chaos-engineering.git
+    targetRevision: feature/eks
+    helm:
+      parameters:
+        - name: pv.spec.csi.volumeHandle
+          value: {{ .Values.prometheus.pv.spec.csi.volumeHandle }}
+        - name: pv.spec.capacity.storage
+          value: {{ .Values.prometheus.pv.spec.capacity.storage }}
