@@ -47,3 +47,5 @@ spec:
           value: {{ .Values.prometheus.server.persistentVolume.size }}
         - name: server.persistentVolume.accessModes[0]
           value: ReadWriteMany
+        - name: server.tcpSocketProbeEnabled
+          value: "true"

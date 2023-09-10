@@ -29,7 +29,7 @@ metadata:
   namespace: monitoring
 spec:
   serviceRef:
-    name: prometheus
+    name: prometheus-server
     port: {{ .Values.prometheus.port }}
   targetType: ip
-  targetGroupARN: {{ .Values.influxdb.targetGroupARN }}
+  targetGroupARN: {{ .Values.prometheus.targetGroupARN }}
