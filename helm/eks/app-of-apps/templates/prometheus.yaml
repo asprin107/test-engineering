@@ -47,5 +47,13 @@ spec:
           value: {{ .Values.prometheus.server.persistentVolume.size }}
         - name: server.persistentVolume.accessModes[0]
           value: ReadWriteMany
-        - name: server.tcpSocketProbeEnabled
-          value: "true"
+        - name: configmapReload.prometheus.resources.limits.cpu
+          value: {{ .Values.prometheus.resources.limits.cpu }}
+        - name: configmapReload.prometheus.resources.limits.memory
+          value: {{ .Values.prometheus.resources.limits.memory }}
+        - name: configmapReload.prometheus.resources.requests.cpu
+          value: {{ .Values.prometheus.resources.requests.cpu }}
+        - name: configmapReload.prometheus.resources.requests.memory
+          value: {{ .Values.prometheus.resources.requests.memory }}
+{{/*        - name: server.tcpSocketProbeEnabled*/}}
+{{/*          value: "true"*/}}

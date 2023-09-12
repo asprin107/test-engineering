@@ -1,4 +1,11 @@
 prometheus:
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2048Mi"
+    requests:
+      cpu: "1000m"
+      memory: "2048Mi"
   server:
     serviceAccounts:
       roleArn: ${prometheus_role_arn}

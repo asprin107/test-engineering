@@ -3,6 +3,13 @@ spec:
     server: https://kubernetes.default.svc
 
 prometheus:
+  resources:
+    limits:
+      cpu:
+      memory:
+    requests:
+      cpu:
+      memory:
   server:
     persistentVolume:
       storageClass: efs-sc
