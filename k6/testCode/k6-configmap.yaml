@@ -13,6 +13,35 @@ spec:
   arguments: -o influxdb=http://influxdb.monitoring/test -o experimental-prometheus-rw
   runner:
     image: asprin/k6:latest
+    readinessProbe:
+      httpGet:
+        host:
+        scheme: HTTP
+        path: /v1/status
+        port: 6565
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 10
+      timeoutSeconds: 1
+    livenessProbe:
+      httpGet:
+        host:
+        scheme: HTTP
+        path: /v1/status
+        port: 6565
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 10
+      timeoutSeconds: 1
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
     env:
 # statd configure (This can be used datadog agent)
       - name: K6_STATSD_ENABLE_TAGS
