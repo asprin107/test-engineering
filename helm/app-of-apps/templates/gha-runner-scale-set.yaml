@@ -3,32 +3,106 @@ kind: Application
 metadata:
   name: gha-runner-scale-set
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: default
     server: {{ .Values.spec.destination.server }}
   project: default
-  source:
+  sources:
+  - repoURL: ghcr.io/actions/actions-runner-controller-charts
     chart: gha-runner-scale-set
-    repoURL: ghcr.io/actions/actions-runner-controller-charts
     targetRevision: 0.9.1
     helm:
       parameters:
-        - name: "githubConfigUrl"
-          value: "https://github.com/asprin107/spring-petclinic"
-        - name: "githubConfigSecret.github_token"
+        - name: githubConfigSecret.github_token
           value: "REPLACE_YOUR_TOKEN_HERE"
-        - name: "minRunners"
-          value: "1"
-        - name: "maxRunners"
-          value: "5"
-        - name: "containerMode.type"
-          value: "dind"
-        - name: "controllerServiceAccount.name"
-          value: "gha-runner-scale-set-controller-gha-rs-controller"
-        - name: "controllerServiceAccount.namespace"
-          value: "default"
-        - name: "runnerScaleSetName"
-          value: "mk8s"
+      valuesObject:
+        template:
+          spec:
+            initContainers:
+              - name: init-dind-externals
+                image: ghcr.io/actions/actions-runner:latest
+                command:
+                  [ "cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/" ]
+                volumeMounts:
+                  - name: dind-externals
+                    mountPath: /home/runner/tmpDir
+            containers:
+              - name: runner
+                image: ghcr.io/actions/actions-runner:latest
+                # command: ["/home/runner/run.sh"]
+                command: [ "/bin/sh" ]
+                args:
+                  - -c
+                  - |
+                    sudo apt-get update
+                    sudo apt-get install -y curl wget git zip software-properties-common jq tzdata
+                    sudo ln -fs /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
+                    sudo apt-get install wget apt-transport-https gnupg lsb-release
+                    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+                    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+                    sudo apt-get update
+                    sudo apt-get install trivy
+
+                    /home/runner/run.sh
+                env:
+                  - name: DOCKER_HOST
+                    value: unix:///run/docker/docker.sock
+                volumeMounts:
+                  - name: work
+                    mountPath: /home/runner/_work
+                  - name: dind-sock
+                    mountPath: /run/docker
+                    readOnly: true
+                  - mountPath: /cache
+                    name: runner-cache
+                resources:
+                  requests:
+                    cpu: 1000m
+                    memory: 1Gi
+                  limits:
+                    memory: 4Gi
+              - name: dind
+                image: docker:dind
+                args:
+                  - dockerd
+                  - --host=unix:///run/docker/docker.sock
+                  - --group=$(DOCKER_GROUP_GID)
+                env:
+                  - name: DOCKER_GROUP_GID
+                    value: "123"
+                securityContext:
+                  privileged: true
+                volumeMounts:
+                  - name: work
+                    mountPath: /home/runner/_work
+                  - name: dind-sock
+                    mountPath: /run/docker
+                  - name: dind-externals
+                    mountPath: /home/runner/externals
+            volumes:
+              - name: work
+                emptyDir: { }
+              - name: dind-sock
+                emptyDir: { }
+              - name: dind-externals
+                emptyDir: { }
+              - name: runner-cache
+                persistentVolumeClaim:
+                  claimName: runner-cache
+
+        githubConfigUrl: "https://github.com/asprin107/spring-petclinic"
+
+        minRunners: "1"
+
+        maxRunners: "5"
+
+        containerMode:
+          type: "dind"
+
+        controllerServiceAccount:
+          name: "gha-runner-scale-set-controller-gha-rs-controller"
+          namespace: "default"
+
+        runnerScaleSetName: "bmt-eks"
