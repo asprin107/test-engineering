@@ -34,7 +34,7 @@ resource "argocd_application" "app-of-apps" {
     }
 
     source {
-      repo_url        = "https://github.com/asprin107/chaos-engineering.git"
+      repo_url        = "https://github.com/asprin107/test-engineering.git"
       path            = "helm/app-of-apps"
       target_revision = "HEAD"
     }
