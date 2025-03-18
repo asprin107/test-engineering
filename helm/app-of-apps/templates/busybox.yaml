@@ -13,5 +13,5 @@ spec:
 
   source:
     path: helm/charts/busybox
-    repoURL: https://github.com/asprin107/chaos-engineering.git
+    repoURL: https://github.com/asprin107/test-engineering.git
     targetRevision: HEAD

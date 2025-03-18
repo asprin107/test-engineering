@@ -13,7 +13,7 @@ spec:
 
   source:
     path: helm/charts/influxdb
-    repoURL: https://github.com/asprin107/chaos-engineering.git
+    repoURL: https://github.com/asprin107/test-engineering.git
     targetRevision: HEAD
     helm:
       parameters:
